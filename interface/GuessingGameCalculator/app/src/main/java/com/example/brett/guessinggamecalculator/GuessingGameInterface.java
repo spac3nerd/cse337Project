@@ -13,6 +13,8 @@ import java.util.*;
 public class GuessingGameInterface extends AppCompatActivity {
     GuessingGameRepository game;
     GuessingGameCalculator calculator;
+    boolean userLost = false;
+    boolean userWon = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,15 +23,10 @@ public class GuessingGameInterface extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        //int input = intent.getIntExtra("intVariableName", 0);
 
         int upperBound = 1024;
         int lowerBound = 1;
 
-
-        //System.out.println( "Welcome to the Guessing Game." );
-        //System.out.println( "Please enter your desired upper bound or press enter for the default (1024)" );
-        //input = scanner.nextLine();
         String input = intent.getStringExtra(GuessingGameStart.INPUT);
 
         if( !input.isEmpty() ) {
@@ -43,6 +40,9 @@ public class GuessingGameInterface extends AppCompatActivity {
     }
 
     public void clickGreater(View view){
+        if (userLost) {
+            return;
+        }
         calculator.receiveUserInput(2);
         calculator.userSelectsHigh();
         if(!checkUserWon()) {
@@ -51,12 +51,19 @@ public class GuessingGameInterface extends AppCompatActivity {
     }
 
     public void clickEqual(View view){
+        if (userWon) {
+            return;
+        }
         calculator.receiveUserInput(3);
+        userLost = true;
         ((TextView)findViewById(R.id.guessedNUM)).setTextSize(50);
         ((TextView)findViewById(R.id.guessedNUM)).setText("You Lost!!!");
     }
 
     public void clickLess(View view){
+        if (userLost) {
+            return;
+        }
         calculator.receiveUserInput(1);
         calculator.userSelectsLow();
         if(!checkUserWon()) {
@@ -68,6 +75,7 @@ public class GuessingGameInterface extends AppCompatActivity {
         if(calculator.getGuessIteration() > calculator.getMaxGuesses()){
             ((TextView)findViewById(R.id.guessedNUM)).setTextSize(50);
             ((TextView)findViewById(R.id.guessedNUM)).setText("You Won!!!");
+            userWon = true;
             return true;
         }else{
             return false;
