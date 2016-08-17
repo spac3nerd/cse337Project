@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">GuessingGameCalculator</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_guessing_game_calculator">GuessingGameCalculator</string>
+</resources>
